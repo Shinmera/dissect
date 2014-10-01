@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>DISSECT</title>
+    <style type="text/css">
+      code a{text-decoration:none;}
+      h1{display:inline-block;font-size: 28pt;margin-bottom:0;}
+      code{font-family: Consolas, Inconsolata, monospace;}
+      h4{display: inline-block;margin:0;padding:0;}
+      #symbol-index ul{list-style: none;}
+      .package li{margin-bottom: 20px;}
+      .package pre{margin: 0 0 0 10px; white-space: pre-wrap;}
+      .package .nicknames{font-size: 12pt; font-weight: normal;}
+      table{margin: 20px;}
+      td{padding-bottom: 10px;}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>dissect</h1>
+      <span>0.0.1</span>
+      <p>Introspection for conditions.</p>
+    </header>
+    <div id="content">
+      <article>
+        <c:documentate>
+          <span><h2>About Dissect</h2>
+
+<p>Dissect is a small library for introspecting the call stack and active restarts.</p>
+
+<h2>Supported Implementations</h2>
+
+<p>Since the call stack and restart inspection are not part of ANSI CL, pretty much all of Dissect is implementation-dependant. Currently the following implementations are supported:</p>
+
+<ul>
+<li>SBCL</li>
+<li>CCL</li>
+</ul>
+
+<h2>How To</h2>
+
+<p>Retrieving a list of restart objects is done through <code><a href="#DISSECT:RESTARTS">restarts</a></code>. Similarly, the current stack can be seen with <code><a href="#DISSECT:STACK">stack</a></code>. Returned by both are a list of objects, from which you can read out information. Depending on the implementation, additional slots may be included.</p>
+
+<pre><code>(<a href="#DISSECT:STACK">dissect:stack</a>)
+=&gt; (#&lt;CCL-CALL [0] CALL-CHECK-REGS | ccl:l1;l1-readloop.lisp.newest:827&gt; #&lt;CCL-CALL [1] CHEAP-EVAL | ...)
+
+(<a href="#DISSECT:RESTARTS">dissect:restarts</a>)
+=&gt; (#&lt;CCL-RESTART [SWANK::RETRY] &quot;Retry SLIME REPL evaluation request.&quot;&gt; #&lt;CCL-RESTART [ABORT] ...)
+
+(<a href="#DISSECT:FORM">dissect:form</a> (<a href="http://l1sp.org/cl/first">first</a> (<a href="#DISSECT:STACK">dissect:stack</a>)))
+=&gt; (<a href="http://l1sp.org/cl/defun">DEFUN</a> CALL-CHECK-REGS (FN &amp;REST ARGS) ...)
+
+(<a href="#DISSECT:RESTART">dissect:restart</a> (<a href="http://l1sp.org/cl/first">first</a> (<a href="#DISSECT:RESTARTS">dissect:restarts</a>)))
+=&gt; CCL:SIMPLE-RESTART
+</code></pre>
+</span>
+        </c:documentate>
+      </article>
+      <article>
+        <h2>Copyright</h2>
+        <span>dissect</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license and ©<span>2014</span> <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span>. This library can be obtained on <a href="https://github.com/Shinmera/dissect">https://github.com/Shinmera/dissect</a>.
+      </article>
+      <article id="symbol-index">
+        <h2>Package Index</h2>
+        <ul><li class="package">
+            <h3>
+              <a href="#DISSECT" name="DISSECT">DISSECT</a>
+              <span class="nicknames">(ORG.TYMOONNEXT.DISSECT)</span>
+            </h3>
+            <ul><li>
+                <a name="DISSECT:CALL"/>
+                <article>
+                  <header>
+                    <span>CLASS</span>
+                    <code>
+                      <h4><a href="#DISSECT:CALL">CALL</a></h4>
+                      <span/>
+                      <span/>
+                    </code>
+                  </header>
+                  <pre>Class container for stack call information.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:RESTART"/>
+                <article>
+                  <header>
+                    <span>CLASS</span>
+                    <code>
+                      <h4><a href="#DISSECT:RESTART">RESTART</a></h4>
+                      <span/>
+                      <span/>
+                    </code>
+                  </header>
+                  <pre>Class container for restart information.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:RESTARTS"/>
+                <article>
+                  <header>
+                    <span>FUNCTION</span>
+                    <code>
+                      <h4><a href="#DISSECT:RESTARTS">RESTARTS</a></h4>
+                      <span/>
+                      <span/>
+                    </code>
+                  </header>
+                  <pre>Returns a list of RESTART objects describing the currently available restarts.
+
+Returns an empty list on unsupported platforms.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:STACK"/>
+                <article>
+                  <header>
+                    <span>FUNCTION</span>
+                    <code>
+                      <h4><a href="#DISSECT:STACK">STACK</a></h4>
+                      <span/>
+                      <span/>
+                    </code>
+                  </header>
+                  <pre>Returns a list of CALL objects describing the stack from the point where this function was called, excluding the call to STACK itself.
+
+Returns an empty list on unsupported platforms.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:ARGS"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:ARGS">ARGS</a></h4>
+                      <span/>
+                      <span>(CALL)</span>
+                    </code>
+                  </header>
+                  <pre>Returns a list of arguments that were passed. The arguments may or may not be actually usable values.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:CALL"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:CALL">CALL</a></h4>
+                      <span/>
+                      <span>(CALL)</span>
+                    </code>
+                  </header>
+                  <pre>Returns the stack call function.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:FILE"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:FILE">FILE</a></h4>
+                      <span/>
+                      <span>(CALL)</span>
+                    </code>
+                  </header>
+                  <pre>If possible, returns the file the called function is defined in.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:FORM"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:FORM">FORM</a></h4>
+                      <span/>
+                      <span>(CALL)</span>
+                    </code>
+                  </header>
+                  <pre>If possible, returns the actual definition form of the function.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:LINE"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:LINE">LINE</a></h4>
+                      <span/>
+                      <span>(CALL)</span>
+                    </code>
+                  </header>
+                  <pre>If possible, returns the line number in the file where the function is defined.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:NAME"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:NAME">NAME</a></h4>
+                      <span/>
+                      <span>(RESTART)</span>
+                    </code>
+                  </header>
+                  <pre>Returns the restart's symbol. Use this for INVOKE-RESTART.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:OBJECT"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:OBJECT">OBJECT</a></h4>
+                      <span/>
+                      <span>(RESTART)</span>
+                    </code>
+                  </header>
+                  <pre>Returns the platform-internal restart object.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:POS"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:POS">POS</a></h4>
+                      <span/>
+                      <span>(CALL)</span>
+                    </code>
+                  </header>
+                  <pre>Returns the position of the call on the stack.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:REPORT"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:REPORT">REPORT</a></h4>
+                      <span/>
+                      <span>(RESTART)</span>
+                    </code>
+                  </header>
+                  <pre>Returns the report string describing the restart's effects.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:RESTART"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:RESTART">RESTART</a></h4>
+                      <span/>
+                      <span>(RESTART)</span>
+                    </code>
+                  </header>
+                  <pre>Returns a symbol to the restart-function or a direct function-object.</pre>
+                </article>
+              </li></ul>
+          </li></ul>
+      </article>
+    </div>
+  </body>
+</html>

@@ -11,7 +11,7 @@
   :license "Artistic"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
-  :description "Introspection for conditions."
+  :description "A small lib for introspecting the call stack and active restarts."
   :homepage "https://github.com/Shinmera/dissect"
   :serial T
   :components ((:file "package")

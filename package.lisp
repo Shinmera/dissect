@@ -9,4 +9,19 @@
   (:nicknames #:org.tymoonnext.dissect)
   (:shadow #:restart)
   ;; interface.lisp
-  (:export))
+  (:export
+   #:restart
+   #:name
+   #:report
+   #:restart
+   #:object
+   
+   #:call
+   #:pos
+   #:call
+   #:args
+   #:file
+   #:line
+   
+   #:stack
+   #:restarts))

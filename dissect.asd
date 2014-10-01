@@ -18,5 +18,6 @@
                (:file "toolkit")
                (:file "interface")
                #+sbcl (:file "sbcl")
-               #+ccl (:file "ccl"))
+               #+ccl (:file "ccl")
+               (:file "documentation"))
   :depends-on ())

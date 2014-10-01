@@ -10,7 +10,8 @@
   ((name :initarg :name :accessor name)
    (report :initarg :report :accessor report)
    (restart :initarg :restart :accessor restart)
-   (object :initarg :object :accessor object)))
+   (object :initarg :object :accessor object))
+  (:documentation "Class container for restart information."))
 
 (defmethod print-object ((restart restart) stream)
   (print-unreadable-object (restart stream :type T)
@@ -23,7 +24,8 @@
    (args :initarg :args :accessor args)
    (file :initarg :file :accessor file)
    (line :initarg :line :accessor line)
-   (form :initarg :form :accessor form)))
+   (form :initarg :form :accessor form))
+  (:documentation "Class container for stack call information."))
 
 (defmethod print-object ((call call) stream)
   (print-unreadable-object (call stream :type T)

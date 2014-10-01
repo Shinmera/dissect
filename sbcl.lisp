@@ -7,8 +7,7 @@
 (in-package #:org.tymoonnext.dissect)
 
 (defclass sbcl-call (call)
-  ((info :initarg :info :accessor info)
-   (form :initarg :form :accessor form)))
+  ((info :initarg :info :accessor info)))
 
 (defun frame-location (frame)
   (let* ((code-location (sb-di:frame-code-location frame))

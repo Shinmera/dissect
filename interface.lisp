@@ -14,7 +14,7 @@
 
 (defmethod print-object ((restart restart) stream)
   (print-unreadable-object (restart stream :type T)
-    (format stream "[~s] ~a"
+    (format stream "[~s] ~s"
             (name restart) (report restart))))
 
 (defclass call ()
@@ -22,7 +22,8 @@
    (call :initarg :call :accessor call)
    (args :initarg :args :accessor args)
    (file :initarg :file :accessor file)
-   (line :initarg :line :accessor line)))
+   (line :initarg :line :accessor line)
+   (form :initarg :form :accessor form)))
 
 (defmethod print-object ((call call) stream)
   (print-unreadable-object (call stream :type T)

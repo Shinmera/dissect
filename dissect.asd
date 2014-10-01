@@ -17,5 +17,6 @@
   :components ((:file "package")
                (:file "toolkit")
                (:file "interface")
-               #+sbcl (:file "sbcl"))
+               #+sbcl (:file "sbcl")
+               #+ccl (:file "ccl"))
   :depends-on ())

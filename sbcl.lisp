@@ -37,11 +37,6 @@
        :line line
        :form form))))
 
-(defun call-source (call)
-  (with-open-file (stream (file call))
-    (file-position stream (aref (positions call) (1- (length (positions call)))))
-    (read stream)))
-
 (defun stack ()
   (loop for frame = (sb-di:frame-down (sb-di:top-frame))
         then (sb-di:frame-down frame)

@@ -22,6 +22,7 @@
    #:args
    #:file
    #:line
+   #:form
    
    #:stack
    #:restarts))

@@ -25,7 +25,8 @@
        :call (ccl::lfun-name function)
        :args (mapcar #'cdr (ccl::arguments-and-locals context pointer function pc))
        :file (ccl:source-note-filename source-note)
-       :line (ccl:source-note-start-pos source-note)
+       :line (newlines-until-pos (ccl:source-note-filename source-note)
+                                 (ccl:source-note-start-pos source-note))
        :form (read-source-form (ccl:source-note-filename source-note)
                                (ccl:source-note-start-pos source-note))))))
 
@@ -48,7 +49,11 @@
    'ccl-restart
    :name (ccl::%restart-name restart)
    :restart (ccl::%restart-action restart)
-   :report (ccl::%restart-report restart)
+   :report (let ((report (ccl::%restart-report restart)))
+             (typecase report
+               (function (with-output-to-string (stream)
+                           (funcall report stream)))
+               (T report)))
    :interactive (ccl::%restart-interactive restart)
    :test (ccl::%restart-test restart)
    :object restart))

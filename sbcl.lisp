@@ -16,7 +16,7 @@
     (when debug-source
       (let* ((form (sb-c::debug-source-form debug-source))
              (file (let ((file (sb-c::debug-source-namestring debug-source)))
-                     (when (probe-file file)
+                     (when (and file (probe-file file))
                        file)))
              (line (when file
                      (multiple-value-bind (pos found-form) (find-definition-in-file (sb-debug::frame-call frame) file)

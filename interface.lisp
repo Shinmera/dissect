@@ -50,7 +50,11 @@
 
 (defun restarts ())
 
-(defgeneric present (thing &optional stream))
+(defgeneric present (thing &optional stream)
+  (:documentation "Prints a neat representation of THING to STREAM.
+STREAM can be a format destination.
+THING can be a list of either RESTARTs or CALLs,a  restart, a call, a condition, or T.
+In the last case, the current RESTARTS and STACK are PRESENTed."))
 
 (defmethod present ((condition condition) &optional (stream T))
   (format stream "~a" condition)

@@ -27,7 +27,7 @@
 
 (defun resolve-file-slots (call)
   (multiple-value-bind (file line form) (frame-location (frame call))
-    (setf (file call) file
+    (setf (file call) (when file (translate-logical-pathname file))
           (line call) line
           (form call) form))
   call)

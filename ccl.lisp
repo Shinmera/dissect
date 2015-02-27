@@ -9,18 +9,12 @@
 (defclass ccl-call (call)
   ((source-note :initarg :source-note :accessor source-note)))
 
-(defun read-source-form (file start)
-  (ignore-errors
-   (with-open-file (stream file)
-     (file-position stream start)
-     (read stream))))
-
 (defun resolve-file-slots (call)
-  (let ((source-note (source-note call)))
-    (setf (line call) (newlines-until-pos (ccl:source-note-filename source-note)
-                                          (ccl:source-note-start-pos source-note))
-          (form call) (read-source-form (ccl:source-note-filename source-note)
-                                        (ccl:source-note-start-pos source-note))))
+  (let* ((source-note (source-note call))
+         (file (ccl:source-note-filename source-note))
+         (pos (ccl:source-note-start-pos source-note)))
+    (setf (line call) (when (and file pos) (newlines-until-pos file pos))
+          (form call) (when (and file pos) (read-source-form file pos))))
   call)
 
 (macrolet ((define-resolvent (name)
@@ -41,7 +35,8 @@
      :pos i
      :call (or (ccl:function-name function) function)
      :args (if (listp args) args (make-instance 'unknown-arguments))
-     :file (ccl:source-note-filename source-note)
+     :file (when (ccl:source-note-filename source-note)
+             (translate-logical-pathname (ccl:source-note-filename source-note)))
      :source-note source-note)))
 
 (defun stack ()

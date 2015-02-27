@@ -55,8 +55,7 @@
                  (system::ihs-env ihs))))
 
 (defclass ecl-restart (restart)
-  ((interactive :initarg :interactive :accessor interactive)
-   (test :initarg :test :accessor test)))
+  ())
 
 (defun make-restart (restart)
   (make-instance

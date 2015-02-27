@@ -58,9 +58,7 @@
         collect (make-call frame)))
 
 (defclass sbcl-restart (restart)
-  ((interactive :initarg :interactive :accessor interactive)
-   (test :initarg :test :accessor test)
-   (conditions :initarg :conditions :accessor conditions)))
+  ((conditions :initarg :conditions :accessor conditions)))
 
 (defun make-restart (restart)
   (make-instance

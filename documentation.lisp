@@ -14,6 +14,8 @@
 (docfun report "Returns the report string describing the restart's effects.")
 (docfun restart "Returns a symbol to the restart-function or a direct function-object.")
 (docfun object "Returns the platform-internal restart object.")
+(docfun interactive "Returns the interactive restart function.")
+(docfun test "Returns the restart test function.")
 
 (docfun pos "Returns the position of the call on the stack.")
 (docfun call "Returns the stack call function.")

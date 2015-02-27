@@ -10,7 +10,9 @@
   ((name :initarg :name :accessor name)
    (report :initarg :report :accessor report)
    (restart :initarg :restart :accessor restart)
-   (object :initarg :object :accessor object))
+   (object :initarg :object :accessor object)
+   (interactive :initarg :interactive :accessor interactive)
+   (test :initarg :test :accessor test))
   (:documentation "Class container for restart information."))
 
 (defmethod print-object ((restart restart) stream)

@@ -33,12 +33,14 @@
 
 (defun make-call (i pointer context)
   (let* ((function (ccl:frame-function pointer context))
-         (source-note (ccl:function-source-note function)))
+         (source-note (ccl:function-source-note function))
+         (args (ccl:frame-supplied-arguments
+                pointer context :unknown-marker (make-instance 'unavailable-argument))))
     (make-instance
      'ccl-call
      :pos i
      :call (or (ccl:function-name function) function)
-     :args (ccl:frame-supplied-arguments pointer context :unknown-marker (make-instance 'unavailable-arg))
+     :args (if (listp args) args (make-instance 'unknown-arguments))
      :file (ccl:source-note-filename source-note)
      :source-note source-note)))
 

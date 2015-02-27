@@ -27,7 +27,7 @@
 (defclass unavailable-argument ()
   ())
 
-(defmethod print-object ((arg unavailable-arg) stream)
+(defmethod print-object ((arg unavailable-argument) stream)
   (format stream "#<Unavailable>"))
 
 (defclass call ()

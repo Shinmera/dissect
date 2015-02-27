@@ -15,6 +15,9 @@
    #:report
    #:restart
    #:object
+
+   #:unknown-arguments
+   #:unavailable-argument
    
    #:call
    #:pos

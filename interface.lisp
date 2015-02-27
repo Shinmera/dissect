@@ -18,6 +18,18 @@
     (format stream "[~s] ~s"
             (name restart) (report restart))))
 
+(defclass unknown-arguments ()
+  ())
+
+(defmethod print-object ((args unknown-arguments) stream)
+  (format stream "#<Unknown Arguments>"))
+
+(defclass unavailable-argument ()
+  ())
+
+(defmethod print-object ((arg unavailable-arg) stream)
+  (format stream "#<Unavailable>"))
+
 (defclass call ()
   ((pos :initarg :pos :accessor pos)
    (call :initarg :call :accessor call)

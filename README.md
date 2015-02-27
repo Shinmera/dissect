@@ -7,6 +7,7 @@ Supported Implementations
 Since the call stack and restart inspection are not part of ANSI CL, pretty much all of Dissect is implementation-dependant. Currently the following implementations are supported:
 
 * ABCL
+* Allegro
 * CCL
 * ECL
 * SBCL

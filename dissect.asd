@@ -20,6 +20,7 @@
                (:module "backend"
                 :components
                 (#+abcl (:file "abcl")
+                 #+allegro (:file "allegro")
                  #+ccl (:file "ccl")
                  #+ecl (:file "ecl")
                  #+sbcl (:file "sbcl")))

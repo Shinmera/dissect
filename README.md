@@ -8,6 +8,7 @@ Since the call stack and restart inspection are not part of ANSI CL, pretty much
 
 * SBCL
 * CCL
+* ECL
 
 How To
 ------

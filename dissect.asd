@@ -19,5 +19,6 @@
                (:file "interface")
                #+sbcl (:file "sbcl")
                #+ccl (:file "ccl")
+               #+ecl (:file "ecl")
                (:file "documentation"))
   :depends-on ())

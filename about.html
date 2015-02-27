@@ -20,7 +20,7 @@
     <header>
       <h1>dissect</h1>
       <span>0.0.1</span>
-      <p>Introspection for conditions.</p>
+      <p>A small lib for introspecting the call stack and active restarts.</p>
     </header>
     <div id="content">
       <article>
@@ -36,6 +36,7 @@
 <ul>
 <li>SBCL</li>
 <li>CCL</li>
+<li>ECL</li>
 </ul>
 
 <h2>How To</h2>
@@ -59,13 +60,13 @@
       </article>
       <article>
         <h2>Copyright</h2>
-        <span>dissect</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license and ©<span>2014</span> <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span>. This library can be obtained on <a href="https://github.com/Shinmera/dissect">https://github.com/Shinmera/dissect</a>.
+        <span>dissect</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license and ©<span>2015</span> <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span>. This library can be obtained on <a href="https://github.com/Shinmera/dissect">https://github.com/Shinmera/dissect</a>.
       </article>
       <article id="symbol-index">
         <h2>Package Index</h2>
         <ul><li class="package">
             <h3>
-              <a href="#DISSECT" name="DISSECT">DISSECT</a>
+              <a name="DISSECT" href="#DISSECT">DISSECT</a>
               <span class="nicknames">(ORG.TYMOONNEXT.DISSECT)</span>
             </h3>
             <ul><li>
@@ -93,6 +94,32 @@
                     </code>
                   </header>
                   <pre>Class container for restart information.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:UNAVAILABLE-ARGUMENT"/>
+                <article>
+                  <header>
+                    <span>CLASS</span>
+                    <code>
+                      <h4><a href="#DISSECT:UNAVAILABLE-ARGUMENT">UNAVAILABLE-ARGUMENT</a></h4>
+                      <span/>
+                      <span/>
+                    </code>
+                  </header>
+                  <pre/>
+                </article>
+              </li><li>
+                <a name="DISSECT:UNKNOWN-ARGUMENTS"/>
+                <article>
+                  <header>
+                    <span>CLASS</span>
+                    <code>
+                      <h4><a href="#DISSECT:UNKNOWN-ARGUMENTS">UNKNOWN-ARGUMENTS</a></h4>
+                      <span/>
+                      <span/>
+                    </code>
+                  </header>
+                  <pre/>
                 </article>
               </li><li>
                 <a name="DISSECT:RESTARTS"/>
@@ -132,7 +159,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:ARGS">ARGS</a></h4>
                       <span/>
-                      <span>(CALL)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns a list of arguments that were passed. The arguments may or may not be actually usable values.</pre>
@@ -145,7 +172,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:CALL">CALL</a></h4>
                       <span/>
-                      <span>(CALL)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns the stack call function.</pre>
@@ -158,7 +185,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:FILE">FILE</a></h4>
                       <span/>
-                      <span>(CALL)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>If possible, returns the file the called function is defined in.</pre>
@@ -171,7 +198,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:FORM">FORM</a></h4>
                       <span/>
-                      <span>(CALL)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>If possible, returns the actual definition form of the function.</pre>
@@ -184,7 +211,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:LINE">LINE</a></h4>
                       <span/>
-                      <span>(CALL)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>If possible, returns the line number in the file where the function is defined.</pre>
@@ -197,7 +224,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:NAME">NAME</a></h4>
                       <span/>
-                      <span>(RESTART)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns the restart's symbol. Use this for INVOKE-RESTART.</pre>
@@ -210,7 +237,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:OBJECT">OBJECT</a></h4>
                       <span/>
-                      <span>(RESTART)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns the platform-internal restart object.</pre>
@@ -223,10 +250,26 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:POS">POS</a></h4>
                       <span/>
-                      <span>(CALL)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns the position of the call on the stack.</pre>
+                </article>
+              </li><li>
+                <a name="DISSECT:PRESENT"/>
+                <article>
+                  <header>
+                    <span>GENERIC</span>
+                    <code>
+                      <h4><a href="#DISSECT:PRESENT">PRESENT</a></h4>
+                      <span/>
+                      <span>(THING &amp;OPTIONAL STREAM)</span>
+                    </code>
+                  </header>
+                  <pre>Prints a neat representation of THING to STREAM.
+STREAM can be a format destination.
+THING can be a list of either RESTARTs or CALLs,a  restart, a call, a condition, or T.
+In the last case, the current RESTARTS and STACK are PRESENTed.</pre>
                 </article>
               </li><li>
                 <a name="DISSECT:REPORT"/>
@@ -236,7 +279,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:REPORT">REPORT</a></h4>
                       <span/>
-                      <span>(RESTART)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns the report string describing the restart's effects.</pre>
@@ -249,7 +292,7 @@ Returns an empty list on unsupported platforms.</pre>
                     <code>
                       <h4><a href="#DISSECT:RESTART">RESTART</a></h4>
                       <span/>
-                      <span>(RESTART)</span>
+                      <span>(OBJECT)</span>
                     </code>
                   </header>
                   <pre>Returns a symbol to the restart-function or a direct function-object.</pre>

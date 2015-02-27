@@ -7,7 +7,7 @@
 (in-package #:org.tymoonnext.dissect)
 
 (defclass ccl-call (call)
-  ())
+  ((source-note :initarg :source-note :accessor source-note)))
 
 (defun read-source-form (file start)
   (ignore-errors
@@ -15,20 +15,32 @@
      (file-position stream start)
      (read stream))))
 
+(defun resolve-file-slots (call)
+  (let ((source-note (source-note call)))
+    (setf (line call) (newlines-until-pos (ccl:source-note-filename source-note)
+                                          (ccl:source-note-start-pos source-note))
+          (form call) (read-source-form (ccl:source-note-filename source-note)
+                                        (ccl:source-note-start-pos source-note))))
+  call)
+
+(macrolet ((define-resolvent (name)
+             `(defmethod ,name ((call ccl-call))
+                (unless (slot-boundp call ',name)
+                  (resolve-file-slots call))
+                (call-next-method))))
+  (define-resolvent line)
+  (define-resolvent form))
+
 (defun make-call (i pointer context)
-  (multiple-value-bind (function pc) (ccl::cfp-lfun pointer)
-    ;; No idea what PC actuall is. Welp.
-    (let ((source-note (ccl:function-source-note function)))
-      (make-instance
-       'ccl-call
-       :pos i
-       :call (ccl::lfun-name function)
-       :args (mapcar #'cdr (ccl::arguments-and-locals context pointer function pc))
-       :file (ccl:source-note-filename source-note)
-       :line (newlines-until-pos (ccl:source-note-filename source-note)
-                                 (ccl:source-note-start-pos source-note))
-       :form (read-source-form (ccl:source-note-filename source-note)
-                               (ccl:source-note-start-pos source-note))))))
+  (let* ((function (ccl:frame-function pointer context))
+         (source-note (ccl:function-source-note function)))
+    (make-instance
+     'ccl-call
+     :pos i
+     :call (or (ccl:function-name function) function)
+     :args (ccl:frame-supplied-arguments pointer context :unknown-marker (make-instance 'unavailable-arg))
+     :file (ccl:source-note-filename source-note)
+     :source-note source-note)))
 
 (defun stack ()
   (let ((i 0)

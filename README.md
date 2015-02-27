@@ -28,3 +28,10 @@ Retrieving a list of restart objects is done through `restarts`. Similarly, the 
     (dissect:restart (first (dissect:restarts)))
     => CCL:SIMPLE-RESTART
 
+You can also get a fancy print of calls, restarts, conditions, or the current state using `present`:
+
+    (dissect:present T)
+
+    (handler-bind ((error #'dissect:present))
+      (error "Hello!"))
+

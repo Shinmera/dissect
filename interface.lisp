@@ -47,3 +47,32 @@
 (defun stack ())
 
 (defun restarts ())
+
+(defgeneric present (thing &optional stream)
+  (:method ((condition condition) &optional (stream T))
+    (format stream "~a" condition)
+    (format stream "~&   [Condition of type ~s]" (type-of condition))
+    (format stream "~&~%")
+    (present T stream))
+  (:method ((thing (eql T)) &optional (stream T))
+    (present (restarts) stream)
+    (format stream "~&~%")
+    (present (stack) stream))
+  (:method ((list list) &optional (stream T))
+    (when list
+      (etypecase (first list)
+        (restart (format stream "~&Available restarts:")
+         (loop for i from 0
+               for item in list
+               do (format stream "~& ~d: " i)
+                  (present item stream)))
+        (call (format stream "~&Backtrace:")
+         (loop for item in list
+               do (format stream "~& ")
+                  (present item stream))))))
+  (:method ((restart restart) &optional (stream T))
+    (format stream "[~a] ~a" (name restart) (report restart)))
+  (:method ((call call) &optional (stream T))
+    (let ((*print-pretty* NIL))
+      (format stream "~d: ~:[~s ~s~;(~s~{ ~s~})~]"
+              (pos call) (listp (args call)) (call call) (args call)))))

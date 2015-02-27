@@ -44,10 +44,10 @@
     (format stream "[~a] ~a~@[ | ~a~@[:~a~]~]"
             (pos call) (call call) (file call) (line call))))
 
-(declaim (ftype (function () list) stack))
+(declaim (ftype (function () list) stack restarts)
+         (notinline stack restarts))
 (defun stack ())
 
-(declaim (ftype (function () list) restarts))
 (defun restarts ())
 
 (defgeneric present (thing &optional stream))

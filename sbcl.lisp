@@ -7,7 +7,8 @@
 (in-package #:org.tymoonnext.dissect)
 
 (defclass sbcl-call (call)
-  ((info :initarg :info :accessor info)))
+  ((info :initarg :info :accessor info)
+   (frame :initarg :frame :accessor frame)))
 
 (defun frame-location (frame)
   (let* ((code-location (sb-di:frame-code-location frame))
@@ -24,18 +25,31 @@
                        (when pos (newlines-until-pos file pos))))))
         (values file line form)))))
 
+(defun resolve-file-slots (call)
+  (multiple-value-bind (file line form) (frame-location (frame call))
+    (setf (file call) file
+          (line call) line
+          (form call) form))
+  call)
+
+(macrolet ((define-resolvent (name)
+             `(defmethod ,name ((call sbcl-call))
+                (unless (slot-boundp call ',name)
+                  (resolve-file-slots call))
+                (call-next-method))))
+  (define-resolvent file)
+  (define-resolvent line)
+  (define-resolvent form))
+
 (defun make-call (frame)
   (multiple-value-bind (call args info) (sb-debug::frame-call frame)
-    (multiple-value-bind (file line form) (frame-location frame)
-      (make-instance
-       'sbcl-call
-       :pos (sb-di:frame-number frame)
-       :call call
-       :args args
-       :info info
-       :file file
-       :line line
-       :form form))))
+    (make-instance
+     'sbcl-call
+     :frame frame
+     :pos (sb-di:frame-number frame)
+     :call call
+     :args args
+     :info info)))
 
 (defun stack ()
   (loop for frame = (sb-di:frame-down (sb-di:top-frame))

@@ -6,6 +6,12 @@
 
 (in-package #:org.tymoonnext.dissect)
 
+(defun read-source-form (file start)
+  (ignore-errors
+   (with-open-file (stream file)
+     (file-position stream start)
+     (read stream))))
+
 (defun newlines-until-pos (file position)
   (with-open-file (stream file)
     (1+ (loop until (>= (file-position stream) position)

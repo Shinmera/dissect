@@ -17,9 +17,11 @@
   :components ((:file "package")
                (:file "toolkit")
                (:file "interface")
-               #+abcl (:file "abcl")
-               #+ccl (:file "ccl")
-               #+ecl (:file "ecl")
-               #+sbcl (:file "sbcl")
+               (:module "backend"
+                :components
+                (#+abcl (:file "abcl")
+                 #+ccl (:file "ccl")
+                 #+ecl (:file "ecl")
+                 #+sbcl (:file "sbcl")))
                (:file "documentation"))
   :depends-on ())

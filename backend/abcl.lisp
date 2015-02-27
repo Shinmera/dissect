@@ -154,4 +154,4 @@
    :object restart))
 
 (defun restarts ()
-  (mapcar #'make-restart (system::compute-restarts)))
+  (mapcar #'make-restart (compute-restarts)))

@@ -21,13 +21,15 @@
             (name restart) (report restart))))
 
 (defclass unknown-arguments ()
-  ())
+  ()
+  (:documentation "Used to represent an unknown list of arguments."))
 
 (defmethod print-object ((args unknown-arguments) stream)
   (format stream "#<Unknown Arguments>"))
 
 (defclass unavailable-argument ()
-  ())
+  ()
+  (:documentation "Used to represent an argument that isn't available in the environment."))
 
 (defmethod print-object ((arg unavailable-argument) stream)
   (format stream "#<Unavailable>"))

@@ -19,7 +19,7 @@
   <body>
     <header>
       <h1>dissect</h1>
-      <span>0.0.1</span>
+      <span>0.9.1</span>
       <p>A small lib for introspecting the call stack and active restarts.</p>
     </header>
     <div id="content">
@@ -34,9 +34,12 @@
 <p>Since the call stack and restart inspection are not part of ANSI CL, pretty much all of Dissect is implementation-dependant. Currently the following implementations are supported:</p>
 
 <ul>
-<li>SBCL</li>
+<li>ABCL</li>
+<li>Allegro</li>
 <li>CCL</li>
+<li>CLISP</li>
 <li>ECL</li>
+<li>SBCL</li>
 </ul>
 
 <h2>How To</h2>
@@ -54,6 +57,14 @@
 
 (<a href="#DISSECT:RESTART">dissect:restart</a> (<a href="http://l1sp.org/cl/first">first</a> (<a href="#DISSECT:RESTARTS">dissect:restarts</a>)))
 =&gt; CCL:SIMPLE-RESTART
+</code></pre>
+
+<p>You can also get a fancy print of calls, restarts, conditions, or the current state using <code><a href="#DISSECT:PRESENT">present</a></code>:</p>
+
+<pre><code>(<a href="#DISSECT:PRESENT">dissect:present</a> T)
+
+(<a href="http://l1sp.org/cl/handler-bind">handler-bind</a> ((error #'dissect:present))
+  (<a href="http://l1sp.org/cl/error">error</a> &quot;Hello!&quot;))
 </code></pre>
 </span>
         </c:documentate>
@@ -106,7 +117,7 @@
                       <span/>
                     </code>
                   </header>
-                  <pre/>
+                  <pre>Used to represent an argument that isn't available in the environment.</pre>
                 </article>
               </li><li>
                 <a name="DISSECT:UNKNOWN-ARGUMENTS"/>
@@ -119,7 +130,7 @@
                       <span/>
                     </code>
                   </header>
-                  <pre/>
+                  <pre>Used to represent an unknown list of arguments.</pre>
                 </article>
               </li><li>
                 <a name="DISSECT:RESTARTS"/>
@@ -162,7 +173,7 @@ Returns an empty list on unsupported platforms.</pre>
                       <span>(OBJECT)</span>
                     </code>
                   </header>
-                  <pre>Returns a list of arguments that were passed. The arguments may or may not be actually usable values.</pre>
+                  <pre>Returns a list of arguments that were passed or an instance of UNKNOWN-ARGUMENTS. The arguments may or may not be actually usable values.</pre>
                 </article>
               </li><li>
                 <a name="DISSECT:CALL"/>

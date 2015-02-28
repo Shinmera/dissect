@@ -9,6 +9,7 @@ Since the call stack and restart inspection are not part of ANSI CL, pretty much
 * ABCL
 * Allegro
 * CCL
+* CLISP
 * ECL
 * SBCL
 

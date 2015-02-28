@@ -19,7 +19,7 @@
 
 (docfun pos "Returns the position of the call on the stack.")
 (docfun call "Returns the stack call function.")
-(docfun args "Returns a list of arguments that were passed. The arguments may or may not be actually usable values.")
+(docfun args "Returns a list of arguments that were passed or an instance of UNKNOWN-ARGUMENTS. The arguments may or may not be actually usable values.")
 (docfun file "If possible, returns the file the called function is defined in.")
 (docfun line "If possible, returns the line number in the file where the function is defined.")
 (docfun form "If possible, returns the actual definition form of the function.")

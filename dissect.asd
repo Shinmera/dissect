@@ -7,7 +7,7 @@
 (in-package #:cl-user)
 (asdf:defsystem dissect
   :name "Dissect"
-  :version "0.9.1"
+  :version "0.10.0"
   :license "Artistic"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"

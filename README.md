@@ -36,3 +36,4 @@ You can also get a fancy print of calls, restarts, conditions, or the current st
     (handler-bind ((error #'dissect:present))
       (error "Hello!"))
 
+Sometimes having the full stack shown gives you a lot of noise and uninteresting information. To limit this --and thus make the stacks dissect returns cleaner-- you can use `with-truncated-stack` and `with-capped-stack`. Those will ensure that only frames above and below the respective macros are shown. Similarly, those can easily lead to completely empty stack reports, so make sure to only use them where you are absolutely sure that you will not need the information anymore.

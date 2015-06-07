@@ -23,9 +23,10 @@
                 (return (read stream)))))))
 
 (defun newlines-until-pos (file position)
-  (with-open-file (stream file)
-    (1+ (loop until (>= (file-position stream) position)
-              count (char= (read-char stream) #\Newline)))))
+  (ignore-errors
+   (with-open-file (stream file)
+     (1+ (loop until (>= (file-position stream) position)
+               count (char= (read-char stream) #\Newline))))))
 
 (defun read-toplevel-form (stream)
   (loop for char = (read-char stream NIL NIL)

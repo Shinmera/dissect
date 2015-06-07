@@ -29,4 +29,6 @@
    
    #:stack
    #:restarts
-   #:present))
+   #:present
+   #:with-truncated-stack
+   #:with-capped-stack))

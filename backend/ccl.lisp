@@ -47,7 +47,7 @@
          (push (make-call i pointer context) stack)
          (incf i))
      :start-frame-number 1)
-    (nreverse stack)))
+    (chop-stack (nreverse stack))))
 
 (defclass ccl-restart (restart)
   ())

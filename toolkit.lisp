@@ -63,3 +63,17 @@
                  (when (and searchpos (or (not min) (<= searchpos (third min))))
                    (setf min (list pos top searchpos))))
             finally (return (values (first min) (second min)))))))
+
+(defun chop-stack (stack)
+  "Look for stack truncations and cappings and chop it down accordingly."
+  (flet ((frame= (frame func)
+           (or (eql (call frame) func)
+               (eql (call frame) (fdefinition func)))))
+    (loop with start = 0
+          for i from 0
+          for frame in stack
+          until (frame= frame 'stack-truncator)
+          collect frame into final-stack
+          do (when (frame= frame 'stack-capper)
+               (setf start (1+ i)))
+          finally (return (nthcdr start final-stack)))))

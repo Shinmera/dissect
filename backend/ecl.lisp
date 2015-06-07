@@ -47,12 +47,13 @@
      :file-pos position)))
 
 (defun stack ()
-  (loop for ihs downfrom (1- (system::ihs-top)) above 0
-        for i from 0
-        collect (make-call
-                 i
-                 (system::ihs-fun ihs)
-                 (system::ihs-env ihs))))
+  (chop-stack
+   (loop for ihs downfrom (1- (system::ihs-top)) above 0
+         for i from 0
+         collect (make-call
+                  i
+                  (system::ihs-fun ihs)
+                  (system::ihs-env ihs)))))
 
 (defclass ecl-restart (restart)
   ())

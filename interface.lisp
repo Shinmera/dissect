@@ -91,3 +91,17 @@ In the last case, the current RESTARTS and STACK are PRESENTed."))
   (let ((*print-pretty* NIL))
     (format stream "~d: ~:[~s ~s~;(~s~{ ~s~})~]"
             (pos call) (listp (args call)) (call call) (args call))))
+
+(declaim (notinline stack-truncator))
+(defun stack-truncator (function)
+  (funcall function))
+
+(defmacro with-truncated-stack (() &body body)
+  `(stack-truncator (lambda () ,@body)))
+
+(declaim (notinline stack-capper))
+(defun stack-capper (function)
+  (funcall function))
+
+(defmacro with-capped-stack (() &body body)
+  `(stack-capper (lambda () ,@body)))

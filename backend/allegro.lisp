@@ -46,11 +46,12 @@
           finally (return top-frame))))
 
 (defun stack ()
-  (loop for frame = (next-frame (next-frame (top-frame)))
-        then (next-frame frame)
-        for i from 0
-        while frame
-        collect (make-call i frame)))
+  (chop-stack
+   (loop for frame = (next-frame (next-frame (top-frame)))
+         then (next-frame frame)
+         for i from 0
+         while frame
+         collect (make-call i frame))))
 
 (defclass acl-restart (restart)
   ())

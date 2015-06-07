@@ -215,14 +215,15 @@
        :spec spec))))
 
 (defun stack ()
-  (let ((mode 2 #|all-stack-elements|#))
-    (loop with i = -1
-          for last = NIL then frame
-          for frame = (sys::the-frame)
-          then (sys::frame-up 1 frame mode)
-          until (eq frame last)
-          unless (unneeded-frame-p frame)
-          collect (make-call (incf i) frame))))
+  (chop-stack
+   (let ((mode 2 #|all-stack-elements|#))
+     (loop with i = -1
+           for last = NIL then frame
+           for frame = (sys::the-frame)
+           then (sys::frame-up 1 frame mode)
+           until (eq frame last)
+           unless (unneeded-frame-p frame)
+           collect (make-call (incf i) frame)))))
 
 ;;;;;
 ;; Restarts

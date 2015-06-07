@@ -30,3 +30,6 @@ Returns an empty list on unsupported platforms.")
 (docfun restarts "Returns a list of RESTART objects describing the currently available restarts.
 
 Returns an empty list on unsupported platforms.")
+
+(docfun with-truncated-stack "Calls BODY in an environment where a call to STACK will not report frames further down.")
+(docfun with-capped-stack "Calls BODY in an environment where a call to STACK will not report frames further up.")

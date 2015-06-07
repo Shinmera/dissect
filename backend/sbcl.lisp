@@ -52,10 +52,11 @@
      :info info)))
 
 (defun stack ()
-  (loop for frame = (sb-di:frame-down (sb-di:top-frame))
-        then (sb-di:frame-down frame)
-        while frame
-        collect (make-call frame)))
+  (chop-stack
+   (loop for frame = (sb-di:frame-down (sb-di:top-frame))
+         then (sb-di:frame-down frame)
+         while frame
+         collect (make-call frame))))
 
 (defclass sbcl-restart (restart)
   ((conditions :initarg :conditions :accessor conditions)))
@@ -74,3 +75,7 @@
 
 (defun restarts ()
   (mapcar #'make-restart (compute-restarts)))
+
+(defmacro with-truncated-stack (() &body body)
+  `(stack-truncator (sb-int:named-lambda with-truncated-stack-lambda () ,@body)))
+

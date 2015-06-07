@@ -131,9 +131,10 @@
      :frame frame)))
 
 (defun stack ()
-  (loop for frame in (cddr (sys:backtrace))
-        for i from 0
-        collect (make-call i frame)))
+  (chop-stack
+   (loop for frame in (cddr (sys:backtrace))
+         for i from 0
+         collect (make-call i frame))))
 
 (defclass abcl-restart (restart)
   ((interactive :initarg :interactive :accessor interactive)

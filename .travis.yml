@@ -1,0 +1,21 @@
+language: common-lisp
+
+env:
+  matrix:
+    - LISP=abcl
+    - LISP=allegro
+    - LISP=ccl
+    - LISP=clisp
+    - LISP=ecl
+    - LISP=sbcl
+
+install:
+  # CL
+  - curl https://raw.githubusercontent.com/luismbo/cl-travis/master/install.sh | bash
+
+script:
+  - cl -e '(ql:quickload :dissect)'
+
+notifications:
+  email:
+    - shinmera@tymoon.eu

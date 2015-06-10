@@ -1,4 +1,4 @@
-About Dissect
+About Dissect <a href="https://travis-ci.org/Shinmera/dissect"><img src="https://travis-ci.org/Shinmera/dissect.svg?branch=master" alt="Build Status" align="right" /></a>
 -------------
 Dissect is a small library for introspecting the call stack and active restarts.
 

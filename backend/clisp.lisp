@@ -235,7 +235,8 @@
   (make-instance
    'clisp-restart
    :name (system::restart-name restart)
-   :report (let ((report (system::restart-report restart)))
+   :report (let* ((*print-readably* NIL)
+                  (report (system::restart-report restart)))
              (typecase report
                (function (with-output-to-string (stream)
                            (funcall report stream)))

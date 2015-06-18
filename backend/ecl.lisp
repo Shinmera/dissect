@@ -62,7 +62,8 @@
   (make-instance
    'ecl-restart
    :name (system::restart-name restart)
-   :report (let ((report (system::restart-report-function restart)))
+   :report (let* ((*print-readably* NIL)
+                  (report (system::restart-report-function restart)))
              (typecase report
                (function (with-output-to-string (stream)
                            (funcall report stream)))

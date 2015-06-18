@@ -57,7 +57,8 @@
    'ccl-restart
    :name (ccl::%restart-name restart)
    :restart (ccl::%restart-action restart)
-   :report (let ((report (ccl::%restart-report restart)))
+   :report (let* ((*print-readably* NIL)
+                  (report (ccl::%restart-report restart)))
              (typecase report
                (function (with-output-to-string (stream)
                            (funcall report stream)))

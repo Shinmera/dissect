@@ -66,7 +66,8 @@
    'sbcl-restart
    :name (restart-name restart)
    :report (with-output-to-string (stream)
-             (funcall (sb-kernel::restart-report-function restart) stream))
+             (let ((*print-readably* NIL))
+               (funcall (sb-kernel::restart-report-function restart) stream)))
    :restart (sb-kernel::restart-function restart)
    :object restart
    :interactive (sb-kernel::restart-interactive-function restart)

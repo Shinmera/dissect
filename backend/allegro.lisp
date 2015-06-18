@@ -61,7 +61,8 @@
    'acl-restart
    :name (excl::restart-name restart)
    :restart (excl::restart-function restart)
-   :report (let ((report (excl::restart-report-function restart)))
+   :report (let* ((*print-readably* NIL)
+                  (report (excl::restart-report-function restart)))
              (typecase report
                (function (with-output-to-string (stream)
                            (funcall report stream)))

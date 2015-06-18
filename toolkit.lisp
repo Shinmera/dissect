@@ -78,3 +78,42 @@
           do (when (frame= frame 'stack-capper)
                (setf start (1+ i)))
           finally (return (nthcdr start final-stack)))))
+
+;; Copied over from bordeaux-threads.
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  #+allegro (require :smputil)
+  #+corman  (require :threads))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  #+(or armedbear
+        (and allegro multiprocessing)
+        (and clisp mt)
+        (and openmcl openmcl-native-threads)
+        (and cmu mp)
+        corman
+        (and ecl threads)
+        mkcl
+        lispworks
+        (and digitool ccl-5.1)
+        (and sbcl sb-thread)
+        scl)
+  (pushnew :thread-support *features*))
+
+(defun current-thread ()
+  (or 
+   #+bordeaux-threads (bt:current-thread)
+   #+thread-support
+   (or
+    #+abcl (threads:current-thread)
+    #+allegro mp:*current-process*
+    #+clisp (mt:current-thread)
+    #+ccl ccl:*current-process*
+    #+cmucl mp:*current-process*
+    #+corman threads:*current-thread*
+    #+ecl mp::*current-process*
+    #+lispworks (mp:get-current-process)
+    #+digitool ccl:*current-process*
+    #+mkcl mt::*thread*
+    #+sbcl sb-thread:*current-thread*
+    #+scl thread:*thread*
+    NIL)))

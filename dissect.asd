@@ -7,11 +7,11 @@
 (in-package #:cl-user)
 (asdf:defsystem dissect
   :name "Dissect"
-  :version "0.10.0"
+  :version "0.11.0"
   :license "Artistic"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
-  :description "A small lib for introspecting the call stack and active restarts."
+  :description "A lib for introspecting the call stack and active restarts."
   :homepage "https://github.com/Shinmera/dissect"
   :serial T
   :components ((:file "package")

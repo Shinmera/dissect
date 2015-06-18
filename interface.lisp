@@ -6,91 +6,11 @@
 
 (in-package #:org.tymoonnext.dissect)
 
-(defclass restart ()
-  ((name :initarg :name :accessor name)
-   (report :initarg :report :accessor report)
-   (restart :initarg :restart :accessor restart)
-   (object :initarg :object :accessor object)
-   (interactive :initarg :interactive :accessor interactive)
-   (test :initarg :test :accessor test))
-  (:documentation "Class container for restart information."))
-
-(defmethod print-object ((restart restart) stream)
-  (print-unreadable-object (restart stream :type T)
-    (format stream "[~s] ~s"
-            (name restart) (report restart))))
-
-(defclass unknown-arguments ()
-  ()
-  (:documentation "Used to represent an unknown list of arguments."))
-
-(defmethod print-object ((args unknown-arguments) stream)
-  (format stream "#<Unknown Arguments>"))
-
-(defclass unavailable-argument ()
-  ()
-  (:documentation "Used to represent an argument that isn't available in the environment."))
-
-(defmethod print-object ((arg unavailable-argument) stream)
-  (format stream "#<Unavailable>"))
-
-(defclass call ()
-  ((pos :initarg :pos :accessor pos)
-   (call :initarg :call :accessor call)
-   (args :initarg :args :accessor args)
-   (file :initarg :file :accessor file)
-   (line :initarg :line :accessor line)
-   (form :initarg :form :accessor form))
-  (:documentation "Class container for stack call information."))
-
-(defmethod print-object ((call call) stream)
-  (print-unreadable-object (call stream :type T)
-    (format stream "[~a] ~a~@[ | ~a~@[:~a~]~]"
-            (pos call) (call call) (file call) (line call))))
-
 (declaim (ftype (function () list) stack restarts)
          (notinline stack restarts))
 (defun stack ())
 
 (defun restarts ())
-
-(defgeneric present (thing &optional stream)
-  (:documentation "Prints a neat representation of THING to STREAM.
-STREAM can be a format destination.
-THING can be a list of either RESTARTs or CALLs,a  restart, a call, a condition, or T.
-In the last case, the current RESTARTS and STACK are PRESENTed."))
-
-(defmethod present ((condition condition) &optional (stream T))
-  (format stream "~a" condition)
-  (format stream "~&   [Condition of type ~s]" (type-of condition))
-  (format stream "~&~%")
-  (present T stream))
-
-(defmethod present ((thing (eql T)) &optional (stream T))
-  (present (restarts) stream)
-  (format stream "~&~%")
-  (present (stack) stream))
-
-(defmethod present ((list list) &optional (stream T))
-  (when list
-    (etypecase (first list)
-      (restart (format stream "~&Available restarts:")
-       (loop for i from 0
-             for item in list
-             do (format stream "~& ~d: " i)
-                (present item stream)))
-      (call (format stream "~&Backtrace:")
-       (loop for item in list
-             do (format stream "~& ")
-                (present item stream))))))
-
-(defmethod present ((restart restart) &optional (stream T))
-  (format stream "[~a] ~a" (name restart) (report restart)))
-
-(defmethod present ((call call) &optional (stream T))
-  (let ((*print-pretty* NIL))
-    (format stream "~d: ~:[~s ~s~;(~s~{ ~s~})~]"
-            (pos call) (listp (args call)) (call call) (args call))))
 
 (declaim (notinline stack-truncator))
 (defun stack-truncator (function)
@@ -105,3 +25,112 @@ In the last case, the current RESTARTS and STACK are PRESENTed."))
 
 (defmacro with-capped-stack (() &body body)
   `(stack-capper (lambda () ,@body)))
+
+(defun present (thing &optional (destination T))
+  (with-capped-stack ()
+    (etypecase destination
+      ((eql T) (present thing *standard-output*))
+      ((eql NIL) (with-output-to-string (stream)
+                   (present thing stream)))
+      (stream (present-object thing destination)))))
+
+(defgeneric present-object (thing stream))
+
+(defmethod present-object ((condition condition) stream)
+  (format stream "~a" condition)
+  (format stream "~&   [Condition of type ~s]" (type-of condition))
+  (format stream "~&~%")
+  (present-object T stream))
+
+(defmethod present-object ((thing (eql T)) stream)
+  (present-object (capture-environment) stream))
+
+(defmethod present-object ((list list) stream)
+  (when list
+    (etypecase (first list)
+      (restart (format stream "~&Available restarts:")
+       (loop for i from 0
+             for item in list
+             do (format stream "~& ~d: " i)
+                (present-object item stream)))
+      (call (format stream "~&Backtrace:")
+       (loop for item in list
+             do (format stream "~& ")
+                (present-object item stream))))))
+
+(defclass restart ()
+  ((name :initarg :name :accessor name)
+   (report :initarg :report :accessor report)
+   (restart :initarg :restart :accessor restart)
+   (object :initarg :object :accessor object)
+   (interactive :initarg :interactive :accessor interactive)
+   (test :initarg :test :accessor test)))
+
+(defmethod print-object ((restart restart) stream)
+  (print-unreadable-object (restart stream :type T)
+    (format stream "[~s] ~s"
+            (name restart) (report restart))))
+
+(defmethod present-object ((restart restart) stream)
+  (format stream "[~a] ~a" (name restart) (report restart)))
+
+(defclass unknown-arguments ()
+  ())
+
+(defmethod print-object ((args unknown-arguments) stream)
+  (format stream "#<Unknown Arguments>"))
+
+(defclass unavailable-argument ()
+  ())
+
+(defmethod print-object ((arg unavailable-argument) stream)
+  (format stream "#<Unavailable>"))
+
+(defclass call ()
+  ((pos :initarg :pos :accessor pos)
+   (call :initarg :call :accessor call)
+   (args :initarg :args :accessor args)
+   (file :initarg :file :accessor file)
+   (line :initarg :line :accessor line)
+   (form :initarg :form :accessor form)))
+
+(defmethod print-object ((call call) stream)
+  (print-unreadable-object (call stream :type T)
+    (format stream "[~a] ~a~@[ | ~a~@[:~a~]~]"
+            (pos call) (call call) (file call) (line call))))
+
+(defmethod present-object ((call call) stream)
+  (let ((*print-pretty* NIL))
+    (format stream "~d: ~:[~s ~s~;(~s~{ ~s~})~]"
+            (pos call) (listp (args call)) (call call) (args call))))
+
+(defclass environment ()
+  ((condition :initarg :condition :accessor environment-condition)
+   (stack :initarg :stack :accessor environment-stack)
+   (restarts :initarg :restarts :accessor environment-restarts)
+   (thread :initarg :thread :accessor environment-thread))
+  (:default-initargs
+   :condition NIL
+   :stack (stack)
+   :restarts (restarts)
+   :thread (current-thread)))
+
+(declaim (inline capture-environment))
+(defun capture-environment (&optional condition)
+  (with-capped-stack ()
+    (make-instance 'environment :condition condition)))
+
+(defmethod present-object ((env environment) stream)
+  (with-slots ((condition condition) (stack stack) (restarts restarts) (thread thread)) env
+    (format stream "~a" env)
+    (format stream "~&   [Environment~@[ of thread ~a~]]" thread)
+    (when condition
+      (format stream "~&~%")
+      (format stream "~a" condition)
+      (format stream "~&   [Condition of type ~s]" (type-of condition)))
+    (when restarts
+      (format stream "~&~%")
+      (present-object restarts stream))
+    (when stack
+      (format stream "~&~%")
+      (present-object stack stream))))

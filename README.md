@@ -37,3 +37,5 @@ You can also get a fancy print of calls, restarts, conditions, or the current st
       (error "Hello!"))
 
 Sometimes having the full stack shown gives you a lot of noise and uninteresting information. To limit this --and thus make the stacks dissect returns cleaner-- you can use `with-truncated-stack` and `with-capped-stack`. Those will ensure that only frames above and below the respective macros are shown. Similarly, those can easily lead to completely empty stack reports, so make sure to only use them where you are absolutely sure that you will not need the information anymore.
+
+When you need to capture the current environment because for later processing, you can use `capture-environment`. This will return an object that contains the current stack, restarts, thread, and an optional condition object. Using this, the entire environment surrounding an error can be saved. `present` also works with an `environment` object.

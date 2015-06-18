@@ -19,9 +19,9 @@
   </head>
   <body>
     <header>
-      <h1>dissect</h1>
-      <span>0.10.0</span>
-      <p>A small lib for introspecting the call stack and active restarts.</p>
+      <h1><img src="/media/PRO/Projects/CL/dissect/dissect-logo.png" alt="dissect"/></h1>
+      <span>0.11.0</span>
+      <p>A lib for introspecting the call stack and active restarts.</p>
     </header>
     <div id="content">
       <article>
@@ -69,6 +69,8 @@
 </code></pre>
 
 <p>Sometimes having the full stack shown gives you a lot of noise and uninteresting information. To limit this --and thus make the stacks dissect returns cleaner-- you can use <code><a href="#DISSECT:WITH-TRUNCATED-STACK">with-truncated-stack</a></code> and <code><a href="#DISSECT:WITH-CAPPED-STACK">with-capped-stack</a></code>. Those will ensure that only frames above and below the respective macros are shown. Similarly, those can easily lead to completely empty stack reports, so make sure to only use them where you are absolutely sure that you will not need the information anymore.</p>
+
+<p>When you need to capture the current environment because for later processing, you can use <code><a href="#DISSECT:CAPTURE-ENVIRONMENT">capture-environment</a></code>. This will return an object that contains the current stack, restarts, thread, and an optional condition object. Using this, the entire environment surrounding an error can be saved. <code><a href="#DISSECT:PRESENT">present</a></code> also works with an <code><a href="#DISSECT:ENVIRONMENT">environment</a></code> object.</p>
 </span>
         </c:documentate>
       </article>
@@ -103,6 +105,19 @@
                       </code>
                     </header>
                     <pre class="docstring">Class container for stack call information.</pre>
+                  </article>
+                </li><li>
+                  <a name="DISSECT:ENVIRONMENT"/>
+                  <article>
+                    <header class="class">
+                      <span class="type">class</span>
+                      <code>
+                        <h4><a href="#DISSECT:ENVIRONMENT" class="name">ENVIRONMENT</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">()</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Container class for a current &quot;environment&quot;. Has slots for the stack, restarts, and a condition.</pre>
                   </article>
                 </li><li>
                   <a name="DISSECT:RESTART"/>
@@ -168,6 +183,58 @@
                       </code>
                     </header>
                     <pre class="docstring">Returns the stack call function.</pre>
+                  </article>
+                </li><li>
+                  <a name="DISSECT:ENVIRONMENT-CONDITION"/>
+                  <article>
+                    <header class="accessor">
+                      <span class="type">accessor</span>
+                      <code>
+                        <h4><a href="#DISSECT:ENVIRONMENT-CONDITION" class="name">ENVIRONMENT-CONDITION</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">(OBJECT)</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Returns the condition stored in the environment (if any).</pre>
+                  </article>
+                </li><li>
+                  <a name="DISSECT:ENVIRONMENT-RESTARTS"/>
+                  <article>
+                    <header class="accessor">
+                      <span class="type">accessor</span>
+                      <code>
+                        <h4><a href="#DISSECT:ENVIRONMENT-RESTARTS" class="name">ENVIRONMENT-RESTARTS</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">(OBJECT)</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Returns a list of restarts stored in the environment (if any).</pre>
+                  </article>
+                </li><li>
+                  <a name="DISSECT:ENVIRONMENT-STACK"/>
+                  <article>
+                    <header class="accessor">
+                      <span class="type">accessor</span>
+                      <code>
+                        <h4><a href="#DISSECT:ENVIRONMENT-STACK" class="name">ENVIRONMENT-STACK</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">(OBJECT)</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Returns a list of calls stored in the environment (if any).</pre>
+                  </article>
+                </li><li>
+                  <a name="DISSECT:ENVIRONMENT-THREAD"/>
+                  <article>
+                    <header class="accessor">
+                      <span class="type">accessor</span>
+                      <code>
+                        <h4><a href="#DISSECT:ENVIRONMENT-THREAD" class="name">ENVIRONMENT-THREAD</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">(OBJECT)</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Returns the thread stored in the environment (if any).</pre>
                   </article>
                 </li><li>
                   <a name="DISSECT:FILE"/>
@@ -274,6 +341,36 @@
                     <pre class="docstring">Returns a symbol to the restart-function or a direct function-object.</pre>
                   </article>
                 </li><li>
+                  <a name="DISSECT:CAPTURE-ENVIRONMENT"/>
+                  <article>
+                    <header class="function">
+                      <span class="type">function</span>
+                      <code>
+                        <h4><a href="#DISSECT:CAPTURE-ENVIRONMENT" class="name">CAPTURE-ENVIRONMENT</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">(&amp;OPTIONAL CONDITION)</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Capture the current environment into an environment object.</pre>
+                  </article>
+                </li><li>
+                  <a name="DISSECT:PRESENT"/>
+                  <article>
+                    <header class="function">
+                      <span class="type">function</span>
+                      <code>
+                        <h4><a href="#DISSECT:PRESENT" class="name">PRESENT</a></h4>
+                        <span class="qualifiers"></span>
+                        <span class="arguments">(THING &amp;OPTIONAL (DESTINATION T))</span>
+                      </code>
+                    </header>
+                    <pre class="docstring">Prints a neat representation of THING to DESTINATION.
+
+DESTINATION can be NIL, T, or a STREAM.
+THING can be a list of either RESTARTs or CALLs, a  RESTART, a CALL, an ENVIRONMENT, a CONDITION, or T.
+In the last case, the current ENVIRONMENT is presented.</pre>
+                  </article>
+                </li><li>
                   <a name="DISSECT:RESTARTS"/>
                   <article>
                     <header class="function">
@@ -285,7 +382,6 @@
                       </code>
                     </header>
                     <pre class="docstring">Returns a list of RESTART objects describing the currently available restarts.
-
 Returns an empty list on unsupported platforms.</pre>
                   </article>
                 </li><li>
@@ -299,23 +395,21 @@ Returns an empty list on unsupported platforms.</pre>
                         <span class="arguments">()</span>
                       </code>
                     </header>
-                    <pre class="docstring"/>
+                    <pre class="docstring">Returns a list of CALL objects describing the stack from the point where this function was called, excluding the call to STACK itself.
+Returns an empty list on unsupported platforms.</pre>
                   </article>
                 </li><li>
-                  <a name="DISSECT:PRESENT"/>
+                  <a name="DISSECT:PRESENT-OBJECT"/>
                   <article>
                     <header class="generic">
                       <span class="type">generic</span>
                       <code>
-                        <h4><a href="#DISSECT:PRESENT" class="name">PRESENT</a></h4>
+                        <h4><a href="#DISSECT:PRESENT-OBJECT" class="name">PRESENT-OBJECT</a></h4>
                         <span class="qualifiers"></span>
-                        <span class="arguments">(THING &amp;OPTIONAL STREAM)</span>
+                        <span class="arguments">(THING STREAM)</span>
                       </code>
                     </header>
-                    <pre class="docstring">Prints a neat representation of THING to STREAM.
-STREAM can be a format destination.
-THING can be a list of either RESTARTs or CALLs,a  restart, a call, a condition, or T.
-In the last case, the current RESTARTS and STACK are PRESENTed.</pre>
+                    <pre class="docstring">Internal generic function for pretty printing. See PRESENT.</pre>
                   </article>
                 </li><li>
                   <a name="DISSECT:WITH-CAPPED-STACK"/>
@@ -341,7 +435,7 @@ In the last case, the current RESTARTS and STACK are PRESENTed.</pre>
                         <span class="arguments">(NIL &amp;BODY BODY)</span>
                       </code>
                     </header>
-                    <pre class="docstring"/>
+                    <pre class="docstring">Calls BODY in an environment where a call to STACK will not report frames further down.</pre>
                   </article>
                 </li></ul>
             </li></ul>

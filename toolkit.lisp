@@ -101,7 +101,7 @@
 
 (defun current-thread ()
   (or 
-   #+bordeaux-threads (bt:current-thread)
+   (when (find-package :bt) (funcall (find-symbol (string :current-thread) :bt)))
    #+thread-support
    (or
     #+abcl (threads:current-thread)

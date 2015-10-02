@@ -100,7 +100,8 @@
             (pos call) (call call) (file call) (line call))))
 
 (defmethod present-object ((call call) stream)
-  (let ((*print-pretty* NIL))
+  (let ((*print-pretty* NIL)
+        (*print-readably* NIL))
     (format stream "~d: ~:[~s ~s~;(~s~{ ~s~})~]"
             (pos call) (listp (args call)) (call call) (args call))))
 

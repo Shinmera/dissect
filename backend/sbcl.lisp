@@ -65,9 +65,12 @@
   (make-instance
    'sbcl-restart
    :name (restart-name restart)
-   :report (with-output-to-string (stream)
-             (let ((*print-readably* NIL))
-               (funcall (sb-kernel::restart-report-function restart) stream)))
+   :report (let* ((*print-readably* NIL)
+                  (report (sb-kernel::restart-report-function restart)))
+             (typecase report
+               (function (with-output-to-string (stream)
+                           (funcall report stream)))
+               (T report)))
    :restart (sb-kernel::restart-function restart)
    :object restart
    :interactive (sb-kernel::restart-interactive-function restart)

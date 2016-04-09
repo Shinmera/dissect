@@ -58,7 +58,10 @@ In the last case, the current ENVIRONMENT is presented.")
    "Returns the interactive restart function.")
 
   (test
-   "Returns the restart test function."))
+   "Returns the restart test function.")
+
+  (invoke
+   "Invoke the restart that the restart object references."))
 
 (setdocs
   ((unknown-arguments type)

@@ -74,6 +74,13 @@
 (defmethod present-object ((restart restart) stream)
   (format stream "[~a] ~a" (name restart) (report restart)))
 
+(defgeneric invoke (restart &rest args))
+
+(defmethod invoke ((restart restart) &rest args)
+  (if (restart restart)
+      (apply (restart restart) args)
+      (apply #'invoke-restart (name restart) args)))
+
 (defclass unknown-arguments ()
   ())
 

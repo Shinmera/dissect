@@ -22,6 +22,7 @@
    #:report
    #:restart
    #:object
+   #:invoke
 
    #:unknown-arguments
    #:unavailable-argument

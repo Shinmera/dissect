@@ -15,8 +15,8 @@
          (debug-source (ignore-errors
                         (sb-di:code-location-debug-source code-location))))
     (when debug-source
-      (let* ((form (sb-c::debug-source-form debug-source))
-             (file (let ((file (sb-c::debug-source-namestring debug-source)))
+      (let* ((form (sb-di:debug-source-form debug-source))
+             (file (let ((file (sb-di:debug-source-namestring debug-source)))
                      (when (and file (probe-file file))
                        file)))
              (line (when file
@@ -75,7 +75,7 @@
    :object restart
    :interactive (sb-kernel::restart-interactive-function restart)
    :test (sb-kernel::restart-test-function restart)
-   :conditions (sb-kernel::restart-associated-conditions restart)))
+   :conditions (sb-kernel:restart-associated-conditions restart)))
 
 (defun restarts ()
   (mapcar #'make-restart (compute-restarts)))

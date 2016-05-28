@@ -80,6 +80,14 @@
 (defun restarts ()
   (mapcar #'make-restart (compute-restarts)))
 
+(defun stack-capper (function)
+  (declare (optimize (debug 3)))
+  (funcall function))
+
+(defun stack-truncator (function)
+  (declare (optimize (debug 3)))
+  (funcall function))
+
 (defmacro with-truncated-stack (() &body body)
   `(stack-truncator (sb-int:named-lambda with-truncated-stack-lambda () ,@body)))
 

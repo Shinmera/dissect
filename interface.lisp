@@ -109,8 +109,11 @@
 (defmethod present-object ((call call) stream)
   (let ((*print-pretty* NIL)
         (*print-readably* NIL))
-    (format stream "~d: ~:[~s ~s~;(~s~{ ~s~})~]"
-            (pos call) (listp (args call)) (call call) (args call))))
+    (format stream "~d: ~:[~s ~s~;(~s~{ ~a~})~]"
+            (pos call) (listp (args call)) (call call)
+            (loop for arg in (args call)
+                  collect (or (ignore-errors (princ-to-string arg))
+                              "<error printing arg>")))))
 
 (defclass environment ()
   ((condition :initarg :condition :accessor environment-condition)

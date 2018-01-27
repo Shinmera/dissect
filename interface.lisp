@@ -108,12 +108,19 @@
 
 (defmethod present-object ((call call) stream)
   (let ((*print-pretty* NIL)
-        (*print-readably* NIL))
-    (format stream "~d: ~:[~s ~s~;(~s~{ ~a~})~]"
-            (pos call) (listp (args call)) (call call)
-            (loop for arg in (args call)
-                  collect (or (ignore-errors (princ-to-string arg))
-                              "<error printing arg>")))))
+        (*print-readably* NIL)
+        (args (args call)))
+    (format stream "~d: ~:[(~s ~s)~;(~s~{ ~a~})~]"
+            (pos call)
+            ;; If args is a list then they will be listed
+            ;; separated by spaces.
+            (listp args)
+            (call call)
+            (if (listp args)
+                (loop for arg in args
+                      collect (or (ignore-errors (princ-to-string arg))
+                                  "<error printing arg>"))
+                args))))
 
 (defclass environment ()
   ((condition :initarg :condition :accessor environment-condition)

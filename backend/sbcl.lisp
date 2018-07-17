@@ -15,7 +15,7 @@
          (debug-source (ignore-errors
                         (sb-di:code-location-debug-source code-location))))
     (when debug-source
-      (let* ((form (sb-di:debug-source-form debug-source))
+      (let* ((form NIL)
              (file (let ((file (sb-di:debug-source-namestring debug-source)))
                      (when (and file (probe-file file))
                        file)))

@@ -18,16 +18,16 @@ How To
 Retrieving a list of restart objects is done through `restarts`. Similarly, the current stack can be seen with `stack`. Returned by both are a list of objects, from which you can read out information. Depending on the implementation, additional slots may be included.
 
     (dissect:stack)
-    => (#<CCL-CALL [0] CALL-CHECK-REGS | ccl:l1;l1-readloop.lisp.newest:827> #<CCL-CALL [1] CHEAP-EVAL | ...)
+    ; => (#<CCL-CALL [0] CALL-CHECK-REGS | ccl:l1;l1-readloop.lisp.newest:827> #<CCL-CALL [1] CHEAP-EVAL | ...)
     
     (dissect:restarts)
-    => (#<CCL-RESTART [SWANK::RETRY] "Retry SLIME REPL evaluation request."> #<CCL-RESTART [ABORT] ...)
+    ; => (#<CCL-RESTART [SWANK::RETRY] "Retry SLIME REPL evaluation request."> #<CCL-RESTART [ABORT] ...)
     
     (dissect:form (first (dissect:stack)))
-    => (DEFUN CALL-CHECK-REGS (FN &REST ARGS) ...)
+    ; => (DEFUN CALL-CHECK-REGS (FN &REST ARGS) ...)
     
     (dissect:restart (first (dissect:restarts)))
-    => CCL:SIMPLE-RESTART
+    ; => CCL:SIMPLE-RESTART
 
 You can also get a fancy print of calls, restarts, conditions, or the current state using `present`:
 

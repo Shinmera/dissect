@@ -81,7 +81,7 @@ See PRESENT-OBJECT")
   (function present-object
    "Internal generic function for pretty printing. 
 
-See PRESENT."))
+See PRESENT"))
 
 (setdocs
   (type restart

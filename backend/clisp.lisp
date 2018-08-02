@@ -25,10 +25,10 @@
                 (values line (read-source-form-at-line file line))
                 (multiple-value-bind (pos form) (find-definition-in-file file name)
                   (values (newlines-until-pos file pos) form)))
-          (setf (line call) line)
-          (setf (form call) form))
-        (setf (line call) NIL
-              (form call) NIL)))
+          (setf (slot-value call 'line) line)
+          (setf (slot-value call 'form) form))
+        (setf (slot-value call 'line) NIL
+              (slot-value call 'form) NIL)))
   call)
 
 (macrolet ((define-resolvent (name)

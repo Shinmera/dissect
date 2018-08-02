@@ -10,8 +10,8 @@
   ((file-pos :initarg :file-pos :accessor file-pos)))
 
 (defun resolve-file-slots (call)
-  (setf (line call) (when (file call) (newlines-until-pos (file call) (file-pos call)))
-        (form call) (when (file call) (read-source-form (file call) (file-pos call))))
+  (setf (slot-value call 'line) (when (file call) (newlines-until-pos (file call) (file-pos call)))
+        (slot-value call 'form) (when (file call) (read-source-form (file call) (file-pos call))))
   call)
 
 (macrolet ((define-resolvent (name)

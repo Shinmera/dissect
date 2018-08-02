@@ -11,9 +11,9 @@
 
 (defun resolve-file-slots (call)
   (multiple-value-bind (file line form) (source-location (frame call))
-    (setf (file call) file
-          (line call) line
-          (form call) form))
+    (setf (slot-value call 'file) file
+          (slot-value call 'line) line
+          (slot-value call 'form) form))
   call)
 
 (macrolet ((define-resolvent (name)

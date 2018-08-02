@@ -59,12 +59,12 @@
                 (present-object item stream))))))
 
 (defclass restart ()
-  ((name :initarg :name :accessor name)
-   (report :initarg :report :accessor report)
-   (restart :initarg :restart :accessor restart)
-   (object :initarg :object :accessor object)
-   (interactive :initarg :interactive :accessor interactive)
-   (test :initarg :test :accessor test)))
+  ((name :initarg :name :reader name)
+   (report :initarg :report :reader report)
+   (restart :initarg :restart :reader restart)
+   (object :initarg :object :reader object)
+   (interactive :initarg :interactive :reader interactive)
+   (test :initarg :test :reader test)))
 
 (defmethod print-object ((restart restart) stream)
   (print-unreadable-object (restart stream :type T)
@@ -94,12 +94,12 @@
   (format stream "#<Unavailable>"))
 
 (defclass call ()
-  ((pos :initarg :pos :accessor pos)
-   (call :initarg :call :accessor call)
-   (args :initarg :args :accessor args)
-   (file :initarg :file :accessor file)
-   (line :initarg :line :accessor line)
-   (form :initarg :form :accessor form)))
+  ((pos :initarg :pos :reader pos)
+   (call :initarg :call :reader call)
+   (args :initarg :args :reader args)
+   (file :initarg :file :reader file)
+   (line :initarg :line :reader line)
+   (form :initarg :form :reader form)))
 
 (defmethod print-object ((call call) stream)
   (print-unreadable-object (call stream :type T)
@@ -123,10 +123,10 @@
                 args))))
 
 (defclass environment ()
-  ((condition :initarg :condition :accessor environment-condition)
-   (stack :initarg :stack :accessor environment-stack)
-   (restarts :initarg :restarts :accessor environment-restarts)
-   (thread :initarg :thread :accessor environment-thread))
+  ((condition :initarg :condition :reader environment-condition)
+   (stack :initarg :stack :reader environment-stack)
+   (restarts :initarg :restarts :reader environment-restarts)
+   (thread :initarg :thread :reader environment-thread))
   (:default-initargs
    :condition NIL
    :stack (stack)

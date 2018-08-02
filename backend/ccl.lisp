@@ -13,8 +13,8 @@
   (let* ((source-note (source-note call))
          (file (ccl:source-note-filename source-note))
          (pos (ccl:source-note-start-pos source-note)))
-    (setf (line call) (when (and file pos) (newlines-until-pos file pos))
-          (form call) (when (and file pos) (read-source-form file pos))))
+    (setf (slot-value call 'line) (when (and file pos) (newlines-until-pos file pos))
+          (slot-value call 'form) (when (and file pos) (read-source-form file pos))))
   call)
 
 (macrolet ((define-resolvent (name)

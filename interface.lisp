@@ -8,18 +8,18 @@
 
 (declaim (ftype (function () list) stack restarts)
          (notinline stack restarts))
-(defun stack ())
-
-(defun restarts ())
 
 (declaim (notinline stack-truncator))
+#-sbcl
 (defun stack-truncator (function)
   (funcall function))
 
+#-sbcl
 (defmacro with-truncated-stack (() &body body)
   `(stack-truncator (lambda () ,@body)))
 
 (declaim (notinline stack-capper))
+#-sbcl
 (defun stack-capper (function)
   (funcall function))
 

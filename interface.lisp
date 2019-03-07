@@ -42,6 +42,22 @@
   (format stream "~&~%")
   (present-object T stream))
 
+(defclass environment ()
+  ((condition :initarg :condition :reader environment-condition)
+   (stack :initarg :stack :reader environment-stack)
+   (restarts :initarg :restarts :reader environment-restarts)
+   (thread :initarg :thread :reader environment-thread))
+  (:default-initargs
+   :condition NIL
+   :stack (stack)
+   :restarts (restarts)
+   :thread (current-thread)))
+
+(declaim (inline capture-environment))
+(defun capture-environment (&optional condition)
+  (with-capped-stack ()
+    (make-instance 'environment :condition condition)))
+
 (defmethod present-object ((thing (eql T)) stream)
   (present-object (capture-environment) stream))
 
@@ -121,22 +137,6 @@
                       collect (or (ignore-errors (princ-to-string arg))
                                   "<error printing arg>"))
                 args))))
-
-(defclass environment ()
-  ((condition :initarg :condition :reader environment-condition)
-   (stack :initarg :stack :reader environment-stack)
-   (restarts :initarg :restarts :reader environment-restarts)
-   (thread :initarg :thread :reader environment-thread))
-  (:default-initargs
-   :condition NIL
-   :stack (stack)
-   :restarts (restarts)
-   :thread (current-thread)))
-
-(declaim (inline capture-environment))
-(defun capture-environment (&optional condition)
-  (with-capped-stack ()
-    (make-instance 'environment :condition condition)))
 
 (defmethod present-object ((env environment) stream)
   (with-slots ((condition condition) (stack stack) (restarts restarts) (thread thread)) env

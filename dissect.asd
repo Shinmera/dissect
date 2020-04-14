@@ -23,6 +23,7 @@
                 (#+abcl (:file "abcl")
                  #+allegro (:file "allegro")
                  #+ccl (:file "ccl")
+                 #+clasp (:file "clasp")
                  #+clisp (:file "clisp")
                  #+ecl (:file "ecl")
                  #+sbcl (:file "sbcl")))

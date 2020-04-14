@@ -1,3 +1,8 @@
+#|
+ This file is part of Dissect
+ Author: Bike <aeshtaer@gmail.com>
+|#
+
 (in-package #:org.tymoonnext.dissect)
 
 (defun stack ()

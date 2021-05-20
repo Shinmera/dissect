@@ -12,8 +12,8 @@
        (let ((csl (clasp-debug:frame-function-source-position frame)))
          (push (make-instance 'call
                  :pos index
-                 :call (or (clasp-debug:frame-function frame)
-                           (clasp-debug:frame-function-name frame))
+                 :call (or (clasp-debug:frame-function-name frame)
+                           (clasp-debug:frame-function frame))
                  :args (clasp-debug:frame-arguments frame)
                  :form (clasp-debug:frame-function-form frame)
                  :file (and csl (clasp-debug:code-source-line-pathname csl))

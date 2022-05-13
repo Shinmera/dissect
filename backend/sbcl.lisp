@@ -53,7 +53,8 @@
 
 (defun stack ()
   (chop-stack
-   (loop for frame = (sb-di:frame-down (sb-di:top-frame))
+   (loop for frame = (or (sb-debug::resolve-stack-top-hint)
+                         (sb-di:frame-down (sb-di:top-frame)))
          then (sb-di:frame-down frame)
          while frame
          collect (make-call frame))))

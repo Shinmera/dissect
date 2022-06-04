@@ -39,15 +39,16 @@
              (translate-logical-pathname (ccl:source-note-filename source-note)))
      :source-note source-note)))
 
-(defun stack ()
-  (let ((i 0)
-        (stack ()))
-    (ccl:map-call-frames
-     #'(lambda (pointer context)
-         (push (make-call i pointer context) stack)
-         (incf i))
-     :start-frame-number 1)
-    (chop-stack (nreverse stack))))
+(setf (fdefinition 'stack)
+      (lambda ()
+        (let ((i 0)
+              (stack ()))
+          (ccl:map-call-frames
+           #'(lambda (pointer context)
+               (push (make-call i pointer context) stack)
+               (incf i))
+           :start-frame-number 1)
+          (chop-stack (nreverse stack)))))
 
 (defclass ccl-restart (restart)
   ())
@@ -67,5 +68,7 @@
    :test (ccl::%restart-test restart)
    :object restart))
 
-(defun restarts ()
-  (mapcar #'make-restart (compute-restarts)))
+
+(setf (fdefinition 'restarts)
+      (lambda ()
+        (mapcar #'make-restart (compute-restarts))))

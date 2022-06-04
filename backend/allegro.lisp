@@ -45,13 +45,14 @@
                (return (next-frame frame)))
           finally (return top-frame))))
 
-(defun stack ()
-  (chop-stack
-   (loop for frame = (next-frame (next-frame (top-frame)))
-         then (next-frame frame)
-         for i from 0
-         while frame
-         collect (make-call i frame))))
+(setf (fdefinition 'stack)
+      (lambda ()
+        (chop-stack
+         (loop for frame = (next-frame (next-frame (top-frame)))
+                 then (next-frame frame)
+               for i from 0
+               while frame
+               collect (make-call i frame)))))
 
 (defclass acl-restart (restart)
   ())
@@ -71,5 +72,6 @@
    :test (excl::restart-test-function restart)
    :object restart))
 
-(defun restarts ()
-  (mapcar #'make-restart (compute-restarts)))
+(setf (fdefinition 'restarts)
+      (lambda ()
+        (mapcar #'make-restart (compute-restarts))))

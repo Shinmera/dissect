@@ -51,13 +51,14 @@
      :args args
      :info info)))
 
-(defun stack ()
-  (chop-stack
-   (loop for frame = (or (sb-debug::resolve-stack-top-hint)
-                         (sb-di:frame-down (sb-di:top-frame)))
-         then (sb-di:frame-down frame)
-         while frame
-         collect (make-call frame))))
+(setf (fdefinition 'stack)
+      (lambda ()
+        (chop-stack
+         (loop for frame = (or (sb-debug::resolve-stack-top-hint)
+                               (sb-di:frame-down (sb-di:top-frame)))
+                 then (sb-di:frame-down frame)
+               while frame
+               collect (make-call frame)))))
 
 (defclass sbcl-restart (restart)
   ((conditions :initarg :conditions :accessor conditions)))
@@ -78,17 +79,20 @@
    :test (sb-kernel::restart-test-function restart)
    :conditions (sb-kernel:restart-associated-conditions restart)))
 
-(defun restarts ()
-  (mapcar #'make-restart (compute-restarts)))
+(setf (fdefinition 'restarts)
+      (lambda ()
+        (mapcar #'make-restart (compute-restarts))))
 
-(defun stack-capper (function)
-  (declare (optimize (debug 3)))
-  (funcall function))
+(setf (fdefinition 'stack-capper)
+      (lambda (function)
+        (declare (optimize (debug 3)))
+        (funcall function)))
 
-(defun stack-truncator (function)
-  (declare (optimize (debug 3)))
-  (funcall function))
+(setf (fdefinition 'stack-truncator)
+      (lambda (function)
+        (declare (optimize (debug 3)))
+        (funcall function)))
 
-(defmacro with-truncated-stack (() &body body)
+(defmacro %with-truncated-stack (() &body body)
   `(stack-truncator (sb-int:named-lambda with-truncated-stack-lambda () ,@body)))
-
+(setf (macro-function 'with-truncated-stack) (macro-function '%with-truncated-stack))

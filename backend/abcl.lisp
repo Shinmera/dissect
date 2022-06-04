@@ -130,11 +130,12 @@
      :args args
      :frame frame)))
 
-(defun stack ()
-  (chop-stack
-   (loop for frame in (cddr (sys:backtrace))
-         for i from 0
-         collect (make-call i frame))))
+(setf (fdefinition 'stack)
+      (lambda ()
+        (chop-stack
+         (loop for frame in (cddr (sys:backtrace))
+               for i from 0
+               collect (make-call i frame)))))
 
 (defclass abcl-restart (restart)
   ((interactive :initarg :interactive :accessor interactive)
@@ -155,5 +156,6 @@
    :test (system::restart-test-function restart)
    :object restart))
 
-(defun restarts ()
-  (mapcar #'make-restart (compute-restarts)))
+(setf (fdefinition 'restarts)
+      (lambda ()
+        (mapcar #'make-restart (compute-restarts))))

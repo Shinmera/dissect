@@ -214,16 +214,17 @@
        :file file
        :spec spec))))
 
-(defun stack ()
-  (chop-stack
-   (let ((mode 2 #|all-stack-elements|#))
-     (loop with i = -1
-           for last = NIL then frame
-           for frame = (sys::the-frame)
-           then (sys::frame-up 1 frame mode)
-           until (eq frame last)
-           unless (unneeded-frame-p frame)
-           collect (make-call (incf i) frame)))))
+(setf (fdefinition 'stack)
+      (lambda ()
+        (chop-stack
+         (let ((mode 2 #|all-stack-elements|#))
+           (loop with i = -1
+                 for last = NIL then frame
+                 for frame = (sys::the-frame)
+                   then (sys::frame-up 1 frame mode)
+                 until (eq frame last)
+                 unless (unneeded-frame-p frame)
+                   collect (make-call (incf i) frame))))))
 
 ;;;;;
 ;; Restarts
@@ -246,5 +247,6 @@
    :interactive (system::restart-interactive restart)
    :test (system::restart-test restart)))
 
-(defun restarts ()
-  (mapcar #'make-restart (compute-restarts)))
+(setf (fdefinition 'restarts)
+      (lambda ()
+        (mapcar #'make-restart (compute-restarts))))

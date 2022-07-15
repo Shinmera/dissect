@@ -80,8 +80,8 @@
    :conditions (sb-kernel:restart-associated-conditions restart)))
 
 (setf (fdefinition 'restarts)
-      (lambda ()
-        (mapcar #'make-restart (compute-restarts))))
+      (lambda (&optional condition)
+        (mapcar #'make-restart (compute-restarts condition))))
 
 (setf (fdefinition 'stack-capper)
       (lambda (function)

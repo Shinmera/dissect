@@ -28,6 +28,8 @@ See WITH-CAPPED-STACK")
   (function restarts
    "Returns a list of RESTART objects describing the currently available restarts.
 
+If CONDITION is provided, only return restarts associated with this condition.
+
 Returns an empty list on unsupported platforms.
 
 See RESTART")

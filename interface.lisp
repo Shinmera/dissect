@@ -12,7 +12,7 @@
 
 (declaim (ftype (function (&optional (or null condition)) list) restarts)
          (notinline restarts))
-(defun restarts ())
+(defun restarts (&optional condition))
 
 (declaim (notinline stack-truncator))
 (defun stack-truncator (function)

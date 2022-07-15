@@ -6,10 +6,12 @@
 
 (in-package #:org.tymoonnext.dissect)
 
-(declaim (ftype (function () list) stack restarts)
-         (notinline stack restarts))
+(declaim (ftype (function () list) stack)
+         (notinline stack))
 (defun stack ())
 
+(declaim (ftype (function (&optional (or null condition)) list) restarts)
+         (notinline restarts))
 (defun restarts ())
 
 (declaim (notinline stack-truncator))

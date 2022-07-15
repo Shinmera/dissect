@@ -73,5 +73,5 @@
    :object restart))
 
 (setf (fdefinition 'restarts)
-      (lambda ()
-        (mapcar #'make-restart (compute-restarts))))
+      (lambda (&optional condition)
+        (mapcar #'make-restart (compute-restarts condition))))

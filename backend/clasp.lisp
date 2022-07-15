@@ -37,8 +37,8 @@
 
 
 (setf (fdefinition 'restarts)
-      (lambda ()
-        (mapcar #'make-restart (compute-restarts))))
+      (lambda (&optional condition)
+        (mapcar #'make-restart (compute-restarts condition))))
 
 (defmacro with-capped-stack (&body body)
   `(clasp-debug:with-capped-stack () ,@body))

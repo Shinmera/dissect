@@ -26,7 +26,11 @@
    :pos i
    :call (xref::object-to-function-name (debugger:frame-function frame))
    :args (loop for i from 0 below (debugger:frame-number-vars frame)
-               collect (debugger:frame-var-value frame i))
+               unless (eq :local (debugger:frame-var-type frame i))
+                 collect (debugger:frame-var-value frame i))
+   :locals (loop for i from 0 below (debugger:frame-number-vars frame)
+                 collect (cons (debugger:frame-var-name frame i)
+                               (debugger:frame-var-value frame i)))
    :file (fspec-definition-location (debugger:frame-function frame))
    :line NIL))
 

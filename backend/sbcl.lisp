@@ -41,6 +41,33 @@
   (define-resolvent line)
   (define-resolvent form))
 
+(defun frame-locals (frame)
+  (let* ((all-vars (sb-di::debug-fun-debug-vars (sb-di:frame-debug-fun frame)))
+         (loc (sb-di:frame-code-location frame))
+         ;; FIXME: Is discarding invalid vars necessary? Is there any
+         ;; use in them?
+         (vars (remove-if (lambda (var)
+                            (ecase (sb-di:debug-var-validity var loc)
+                              (:valid nil)
+                              ((:invalid :unknown) t)))
+                          all-vars))
+         (more-context (find :more-context vars
+                             ;; NOTE: SLIME guards for SBCL 1.0.49.76,
+                             ;; but that was too long ago to care.
+                             :key #'sb-di::debug-var-info))
+         (more-count (find :more-count vars
+                           :key #'sb-di::debug-var-info)))
+    (when vars
+      (append
+       (loop for var across vars
+             collect (cons
+                      (sb-di:debug-var-symbol var)
+                      (sb-di:debug-var-value var frame)))
+       (when (and more-context more-count)
+         (list (cons 'sb-debug::more
+                     (multiple-value-list
+                      (sb-c:%more-arg-values more-context 0 more-count)))))))))
+
 (defun make-call (frame)
   (multiple-value-bind (call args info) (sb-debug::frame-call frame)
     (make-instance
@@ -49,6 +76,7 @@
      :pos (sb-di:frame-number frame)
      :call call
      :args args
+     :locals (frame-locals frame)
      :info info)))
 
 (setf (fdefinition 'stack)

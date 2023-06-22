@@ -29,12 +29,15 @@
   (let* ((function (ccl:frame-function pointer context))
          (source-note (ccl:function-source-note function))
          (args (ccl:frame-supplied-arguments
-                pointer context :unknown-marker (make-instance 'unavailable-argument))))
+                pointer context :unknown-marker (make-instance 'unavailable-argument)))
+         (args (if (listp args) args (make-instance 'unknown-arguments))))
     (make-instance
      'ccl-call
      :pos i
      :call (or (ccl:function-name function) function)
-     :args (if (listp args) args (make-instance 'unknown-arguments))
+     :args args
+     :locals (loop for (name . value) in (ccl:frame-named-variables pointer context)
+                   collect (cons name value))
      :file (when (ccl:source-note-filename source-note)
              (translate-logical-pathname (ccl:source-note-filename source-note)))
      :source-note source-note)))

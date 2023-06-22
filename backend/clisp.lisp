@@ -181,6 +181,11 @@
          (length (parse-stack-values frame)))
         (T NIL)))
 
+(defun frame-var-name (frame i)
+  (cond ((sys::eval-frame-p frame)
+         (venv-ref (frame-venv frame) i))
+        (t (format nil "~D" i))))
+
 (defun frame-var-value (frame i)
   (cond ((sys::eval-frame-p frame)
          (let ((name (venv-ref (frame-venv frame) i)))
@@ -193,13 +198,16 @@
 (defun make-call (i frame)
   (let* ((type (frame-type frame))
          (call (extract-frame-line frame))
+         (locals (let ((count (frame-var-count frame)))
+                   (when count
+                     (loop for i from 0 below count
+                           collect (cons (frame-var-name frame i)
+                                         (frame-var-value frame i))))))
          (args (case type
                  ((:eval :apply)
                   (when (listp call) (cdr call)))
-                 (T (or (let ((count (frame-var-count frame)))
-                          (when count
-                            (loop for i from 0 below count
-                                  collect (frame-var-value frame i))))
+                 (T (or (and locals
+                             (mapcar #'cdr locals))
                         (make-instance 'unknown-arguments)))))
          (call (if (and (find type '(:eval :apply)) (listp call))
                    (first call)
@@ -210,6 +218,7 @@
        :pos i
        :call call
        :args args
+       :locals locals
        :frame-type type
        :file file
        :spec spec))))

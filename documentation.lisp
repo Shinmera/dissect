@@ -178,6 +178,13 @@ See UNKNOWN-ARGUMENTS
 See UNAVAILABLE-ARGUMENT
 See CALL")
   
+  (function locals
+            "Returns a dotted alist of locals bound in the frame call.
+
+If the locals are not available, returns NIL.
+
+See CALL")
+  
   (function file
    "If possible, returns the file the called function is defined in.
 

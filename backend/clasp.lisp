@@ -16,6 +16,7 @@
                                     :call (or (clasp-debug:frame-function-name frame)
                                               (clasp-debug:frame-function frame))
                                     :args (clasp-debug:frame-arguments frame)
+                                    :locals (clasp-debug:frame-locals frame)
                                     :form (clasp-debug:frame-function-form frame)
                                     :file (and csl (clasp-debug:code-source-line-pathname csl))
                                     :line (and csl (clasp-debug:code-source-line-line-number csl)))

@@ -31,6 +31,7 @@
    #:pos
    #:call
    #:args
+   #:locals
    #:file
    #:line
    #:form

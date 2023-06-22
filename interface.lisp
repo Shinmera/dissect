@@ -101,7 +101,8 @@
    (args :initarg :args :reader args)
    (file :initarg :file :reader file)
    (line :initarg :line :reader line)
-   (form :initarg :form :reader form)))
+   (form :initarg :form :reader form)
+   (locals :initform NIL :initarg :locals :reader locals)))
 
 (defmethod print-object ((call call) stream)
   (print-unreadable-object (call stream :type T)

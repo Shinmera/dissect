@@ -1,9 +1,3 @@
-#|
- This file is a part of Dissect
- (c) 2015 Shirakumo http://tymoon.eu (shinmera@tymoon.eu)
- Author: Nicolas Hafner <shinmera@tymoon.eu>
-|#
-
 (in-package #:org.tymoonnext.dissect)
 
 (defclass ecl-call (call)

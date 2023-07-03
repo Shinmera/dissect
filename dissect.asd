@@ -1,15 +1,9 @@
-#|
- This file is a part of Dissect
- (c) 2014 Shirakumo http://tymoon.eu (shinmera@tymoon.eu)
- Author: Nicolas Hafner <shinmera@tymoon.eu>
-|#
-
 (asdf:defsystem dissect
   :name "Dissect"
   :version "1.0.0"
   :license "zlib"
-  :author "Nicolas Hafner <shinmera@tymoon.eu>"
-  :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
+  :author "Yukari Hafner <shinmera@tymoon.eu>"
+  :maintainer "Yukari Hafner <shinmera@tymoon.eu>"
   :description "A lib for introspecting the call stack and active restarts."
   :homepage "https://Shinmera.github.io/dissect/"
   :bug-tracker "https://github.com/Shinmera/dissect/issues"

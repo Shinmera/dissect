@@ -60,7 +60,9 @@
        (when (and more-context more-count)
          (list (cons 'sb-debug::more
                      (multiple-value-list
-                      (sb-c:%more-arg-values more-context 0 more-count)))))))))
+                      (sb-c:%more-arg-values (sb-di:debug-var-value more-context frame)
+                                             0
+                                             (sb-di:debug-var-value more-count frame))))))))))
 
 (defun make-call (frame)
   (multiple-value-bind (call args info) (sb-debug::frame-call frame)

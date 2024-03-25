@@ -35,6 +35,11 @@
   (define-resolvent line)
   (define-resolvent form))
 
+(defun debug-var-info (var)
+  (let ((s (find-symbol "DEBUG-VAR-INFO" :sb-di)))
+    (when (and s (fboundp s))
+      (funcall s var))))
+
 (defun frame-locals (frame)
   (let* ((all-vars (sb-di::debug-fun-debug-vars (sb-di:frame-debug-fun frame)))
          (loc (sb-di:frame-code-location frame))
@@ -45,12 +50,8 @@
                               (:valid nil)
                               ((:invalid :unknown) t)))
                           all-vars))
-         (more-context (find :more-context vars
-                             ;; NOTE: SLIME guards for SBCL 1.0.49.76,
-                             ;; but that was too long ago to care.
-                             :key #'sb-di::debug-var-info))
-         (more-count (find :more-count vars
-                           :key #'sb-di::debug-var-info)))
+         (more-context (find :more-context vars :key #'debug-var-info))
+         (more-count (find :more-count vars :key #'debug-var-info)))
     (when vars
       (append
        (loop for var across vars

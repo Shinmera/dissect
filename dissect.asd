@@ -5,9 +5,9 @@
   :author "Yukari Hafner <shinmera@tymoon.eu>"
   :maintainer "Yukari Hafner <shinmera@tymoon.eu>"
   :description "A lib for introspecting the call stack and active restarts."
-  :homepage "https://Shinmera.github.io/dissect/"
-  :bug-tracker "https://github.com/Shinmera/dissect/issues"
-  :source-control (:git "https://github.com/Shinmera/dissect.git")
+  :homepage "https://shinmera.com/docs/dissect/"
+  :bug-tracker "https://shinmera.com/project/dissect/issues"
+  :source-control (:git "https://shinmera.com/project/dissect.git")
   :serial T
   :components ((:file "package")
                (:file "toolkit")
